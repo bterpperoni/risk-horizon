@@ -15,12 +15,7 @@ const navigation = [
   { name: "À propos", href: "/about", current: false },
   { name: "Contact", href: "/Contact", current: false },
   { name: "OSI 2024", href: "/OSI", current: false },
-]
-
-const navigationUser = [
-  { name: "Profile", href: "/signin", current: false },
-  { name: "Account settings", href: "/account-settings", current: false },
-  { name: "Case disponible", href: "/case-disponible", current: false },
+  { current: false, SignInButton: <SignInButton>Se connecter</SignInButton> },
 ]
 
 function classNames(...classes: string[]) {
@@ -92,17 +87,22 @@ function Navbar() {
                           aria-current={item.current ? "page" : undefined}
                         >
                           {item.name}
+                          {item.SignInButton}
                         </a>
                       ))}
                       {/* User menu */}
-                      <div className=" text-white mx-3 overflow-visible">
-                        <SignedOut>
-                              <SignInButton />
-                            </SignedOut>
-                            <SignedIn>
-                              <UserButton />
-                            </SignedIn>
-                      </div>
+                      {/* <div className=" text-white mx-3 overflow-visible "> */}
+                      {/* Not signed in state */}
+                      {/* <SignedOut> */}
+                      {/* Button to sign in */}
+                      {/* <SignInButton>Se connecter</SignInButton>
+                        </SignedOut> */}
+                      {/* Signed in state */}
+                      {/* <SignedIn> */}
+                      {/* Button to open user menu */}
+                      {/* <UserButton />
+                        </SignedIn>
+                      </div> */}
                     </div>
 
                   </div>
@@ -128,8 +128,10 @@ function Navbar() {
                     aria-current={item.current ? "page" : undefined}
                   >
                     {item.name}
+                    {item.SignInButton}
                   </DisclosureButton>
                 ))}
+
               </div>
             </DisclosurePanel>
 
