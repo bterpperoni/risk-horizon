@@ -133,6 +133,12 @@ export default function RootLayout({
       {/* <CSPostHogProvider> */}
       <link rel="canonical" href="https://risk-horizon.be/" key="canonical" />
 <body>
+<SignedOut>
+            <SignInButton />
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
         <Toaster richColors />
         <Querywrapper>
           <GoogleCaptchaWrapper>
@@ -142,7 +148,7 @@ export default function RootLayout({
           </GoogleCaptchaWrapper>
         </Querywrapper>
         <Analytics />
-</body> 
+      </body> 
     </html>
 </ClerkProvider>
   )
