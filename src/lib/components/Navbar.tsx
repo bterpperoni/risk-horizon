@@ -79,7 +79,7 @@ function Navbar() {
                     />
                   </div>
                   {/* Desktop menu */}
-                  <div className=" w-full flex flex-row w-min-[70px] relative right-3 sm:ml-6 sm:block mr-4">
+                  <div className="hidden w-full w-min-[70px] relative right-3 sm:ml-6 sm:block mr-4">
                     <div className="flex flex-shrink-1 w-full ml-4 justify-end items-center ">
                       {navigation.map((item) => (
                         <a
@@ -96,23 +96,12 @@ function Navbar() {
                       ))}
                       {/* User menu */}
                       <div className=" text-white mx-3 overflow-visible">
-                        <Menu as="div" className="relative inline-block text-left">
-                          <div>
-                            <MenuButton className="border-white border-2 flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white rounded-md hover:bg-gray-700">
-                              Menu
-                            </MenuButton>
-                          </div>
-
-                          <MenuItems className="absolute right-1 top-[-2] w-44 mt-2 origin-top-right bg-[#040437] divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-
-                            <SignedOut>
+                        <SignedOut>
                               <SignInButton />
                             </SignedOut>
                             <SignedIn>
                               <UserButton />
                             </SignedIn>
-                          </MenuItems>
-                        </Menu>
                       </div>
                     </div>
 
