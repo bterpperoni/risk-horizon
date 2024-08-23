@@ -9,6 +9,15 @@ import Querywrapper from "$/utils/analytics/query-provider"
 import { Toaster } from "sonner"
 import { Analytics } from "@vercel/analytics/react"
 import "$/lib/styles/globals.css"
+import {
+  ClerkProvider,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+useAuth
+} from '@clerk/nextjs'
+import { clerkMiddleware } from "@clerk/nextjs/server"
 
 import Script from "next/script"
 const queryClient = new QueryClient()
@@ -35,6 +44,9 @@ export const metadata: Metadata = {
     "Risk Horizon ASBL est une association à but non lucratif qui vise à promouvoir la cybersécurité et la protection des données en ligne.",
   authors: [{ name: "Risk Horizon" }, { name: "Maxime Curon"}, { name: "Guillaume Richard" }, { name: "Guillaume Rosin" }],
   keywords: [
+    "Belgique",
+    "Belgium",
+    "Risk Horizon ASBL",
     "Cybersécurité",
     "Risk Horizon",
     "ASBL",
@@ -107,6 +119,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
+<ClerkProvider>
     <html lang="fr" className="scroll-smooth" suppressHydrationWarning>
       <head>
         <Script async src="https://www.googletagmanager.com/gtag/js?id=G-4K7L0NDNK9"></Script>
@@ -131,5 +144,6 @@ export default function RootLayout({
         <Analytics />
 </body> 
     </html>
+</ClerkProvider>
   )
 }

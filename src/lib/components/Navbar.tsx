@@ -6,6 +6,8 @@ import { usePathname, useRouter } from "next/navigation"
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react"
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import { useEffect, useMemo } from "react"
+import { SignedOut, SignInButton, SignedIn, UserButton } from "@clerk/nextjs"
+import { auth, getAuth } from "@clerk/nextjs/server"
 
 const navigation = [
   { name: "Accueil", href: "/", current: false },
@@ -31,7 +33,9 @@ function Navbar() {
   // const path = usePathname();
   // if (path === "/hacked") return null;
 
-  const router = useRouter()
+  const router = useRouter();
+
+
 
   useEffect(() => {
     navigation.map((item) => {
@@ -90,26 +94,26 @@ function Navbar() {
                           {item.name}
                         </a>
                       ))}
-              {/* User menu */}
-              <div className=" text-white mx-3 overflow-visible">
-                  <Menu as="div" className="relative inline-block text-left">
-                    <div>
-                      <MenuButton className="border-white border-2 flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white rounded-md hover:bg-gray-700">
-                        Menu
-                      </MenuButton>
-                    </div>
-                    
-                      <MenuItems className="absolute right-1  w-44 mt-2 origin-top-right bg-[#040437] divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        {navigationUser.map((item) => (
-                          <MenuItem key={item.name}>
-                            <DisclosurePanel>
-                              <DisclosureButton as="a" className="block px-4 py-2 text-sm text-white hover:bg-gray-700">{item.name}</DisclosureButton>
-                            </DisclosurePanel>
-                          </MenuItem>
-                        ))}
-                      </MenuItems>
-                  </Menu>
-                </div>
+                      {/* User menu */}
+                      <div className=" text-white mx-3 overflow-visible">
+                        <Menu as="div" className="relative inline-block text-left">
+                          <div>
+                            <MenuButton className="border-white border-2 flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white rounded-md hover:bg-gray-700">
+                              Menu
+                            </MenuButton>
+                          </div>
+
+                          <MenuItems className="absolute right-1 top-[-2] w-44 mt-2 origin-top-right bg-[#040437] divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+
+                            <SignedOut>
+                              <SignInButton />
+                            </SignedOut>
+                            <SignedIn>
+                              <UserButton />
+                            </SignedIn>
+                          </MenuItems>
+                        </Menu>
+                      </div>
                     </div>
 
                   </div>
@@ -118,10 +122,10 @@ function Navbar() {
             </div>
 
 
-            
-            
+
+
             {/* Menu Mobile */}
-              <DisclosurePanel className="md:hidden">
+            <DisclosurePanel className="md:hidden">
               <div className="space-y-1 px-2  pb-3 pt-2">
                 {navigation.map((item) => (
                   <DisclosureButton
