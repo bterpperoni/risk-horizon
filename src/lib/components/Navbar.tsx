@@ -77,19 +77,29 @@ function Navbar() {
                   <div className="hidden w-full w-min-[70px] relative right-3 sm:ml-6 sm:block mr-4">
                     <div className="flex flex-shrink-1 w-full ml-4 justify-end items-center ">
                       {navigation.map((item) => (
-                        <a
-                          key={item.name}
-                          href={item.href}
-                          className={classNames(
-                            item.current ? "bg-[#5f3494] text-white" : "text-white hover:bg-gray-700 hover:text-white",
-                            "rounded-sm px-3 mr-1 py-2 text-[18px] text-nowrap font-medium"
-                          )}
-                          aria-current={item.current ? "page" : undefined}
-                        >
-                          {item.name}
-                          {item.SignInButton}
-                        </a>
+                        <>
+                          <a
+                            key={item.name}
+                            href={item.href}
+                            className={classNames(
+                              item.current ? "bg-[#5f3494] text-white" : "text-white hover:bg-gray-700 hover:text-white",
+                              "rounded-sm px-3 mr-1 py-2 text-[18px] text-nowrap font-medium"
+                            )}
+                            aria-current={item.current ? "page" : undefined}
+                          >
+                            {item.name}
+
+                          </a>
+                        </>
                       ))}
+                      <div className="text-white">
+                        <SignedOut>
+                          <SignInButton>Se connecter</SignInButton>
+                        </SignedOut>
+                        <SignedIn>
+                          <UserButton />
+                        </SignedIn>
+                      </div>
                       {/* User menu */}
                       {/* <div className=" text-white mx-3 overflow-visible "> */}
                       {/* Not signed in state */}
@@ -128,10 +138,16 @@ function Navbar() {
                     aria-current={item.current ? "page" : undefined}
                   >
                     {item.name}
-                    {item.SignInButton}
                   </DisclosureButton>
                 ))}
-
+                <div className="text-white">
+                  <SignedOut>
+                    <SignInButton>Se connecter</SignInButton>
+                  </SignedOut>
+                  <SignedIn>
+                    <UserButton />
+                  </SignedIn>
+                </div>
               </div>
             </DisclosurePanel>
 
