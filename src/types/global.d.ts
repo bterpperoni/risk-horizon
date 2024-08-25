@@ -19,15 +19,11 @@ interface GenericFormValues {
   country: string;
   zipCode: string;
   phone: string;
-  gender: Gender;
+  gender: string;
   organization: string;
-  calledAction: string;
+  calledAction: () => void;
 }
 
-export enum Gender {
-  MASCULIN,
-  FEMININ
-}
 
 
 // Path: src/lib/components/ui/buttons/Button.tsx & ButtonGeneric  --------------------------------------
