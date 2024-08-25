@@ -1,6 +1,6 @@
 import React from "react"
 
-import { Button } from "$/lib/components/ui/button"
+import { Button } from "$/lib/components/ui/buttons/Button"
 
 import Link from "next/link"
 function Page() {

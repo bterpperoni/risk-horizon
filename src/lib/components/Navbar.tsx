@@ -88,7 +88,7 @@ function Navbar() {
                             {item.name}
                           </a>
                       ))}
-                      <div className="text-white">
+                      <div className="text-white w-max cursor-pointer rounded-md p-2 hover:bg-gray-700 flex border-2 items-center">
                         {/* SignedOut match to user disconnected */}
                         <SignedOut>
                           <SignInButton>Se connecter</SignInButton>
@@ -124,7 +124,7 @@ function Navbar() {
                     {item.name}
                   </DisclosureButton>
                 ))}
-                <div className="text-white">
+                <div className="text-white w-full cursor-pointer hover:bg-gray-700 flex border-t-2 px-2 pt-1 flex-shrink-0 text-center justify-center">
                   <SignedOut>
                     <SignInButton>Se connecter</SignInButton>
                   </SignedOut>
