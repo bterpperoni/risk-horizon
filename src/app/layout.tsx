@@ -15,7 +15,7 @@ import {
   SignedIn,
   SignedOut,
   UserButton,
-useAuth
+  useAuth
 } from '@clerk/nextjs'
 import { clerkMiddleware } from "@clerk/nextjs/server"
 
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   title: "Risk Horizon ASBL - Cybersécurité",
   description:
     "Risk Horizon ASBL est une association à but non lucratif qui vise à promouvoir la cybersécurité et la protection des données en ligne.",
-  authors: [{ name: "Risk Horizon" }, { name: "Maxime Curon"}, { name: "Guillaume Richard" }, { name: "Guillaume Rosin" }],
+  authors: [{ name: "Risk Horizon" }, { name: "Maxime Curon" }, { name: "Guillaume Richard" }, { name: "Guillaume Rosin" }],
   keywords: [
     "Belgique",
     "Belgium",
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     "Network security",
     "Sécurité des applications",
     "Application security",
-    "Sécurité des logiciels", 
+    "Sécurité des logiciels",
     "Software security",
     "Sécurité des systèmes d'information",
     "Information system security",
@@ -119,37 +119,37 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-<ClerkProvider>
-    <html lang="fr" className="scroll-smooth" suppressHydrationWarning>
-      <head>
-        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-4K7L0NDNK9"></Script>
-        <Script id="google-analytics">
-          {`window.dataLayer = window.dataLayer || [];
+    <ClerkProvider>
+      <html lang="fr" className="scroll-smooth" suppressHydrationWarning>
+        <head>
+          <Script async src="https://www.googletagmanager.com/gtag/js?id=G-4K7L0NDNK9"></Script>
+          <Script id="google-analytics">
+            {`window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'G-4K7L0NDNK9');`}
-        </Script>
-      </head>
-      {/* <CSPostHogProvider> */}
-      <link rel="canonical" href="https://risk-horizon.be/" key="canonical" />
-<body>
-<SignedOut>
+          </Script>
+        </head>
+        {/* <CSPostHogProvider> */}
+        <link rel="canonical" href="https://risk-horizon.be/" key="canonical" />
+        <body>
+          <SignedOut>
             <SignInButton />
           </SignedOut>
           <SignedIn>
             <UserButton />
           </SignedIn>
-        <Toaster richColors />
-        <Querywrapper>
-          <GoogleCaptchaWrapper>
-            <Navbar />
-            {children}
-            <Footer />
-          </GoogleCaptchaWrapper>
-        </Querywrapper>
-        <Analytics />
-      </body> 
-    </html>
-</ClerkProvider>
+          <Toaster richColors />
+          <Querywrapper>
+            <GoogleCaptchaWrapper>
+              <Navbar />
+              {children}
+              <Footer />
+            </GoogleCaptchaWrapper>
+          </Querywrapper>
+          <Analytics />
+        </body>
+      </html>
+    </ClerkProvider>
   )
 }

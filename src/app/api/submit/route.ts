@@ -66,9 +66,9 @@ export async function POST(request: Request, response: Response) {
     })
     console.log("email sent to " + data2)
 
-    return new Response("Success", { status: 200 })
+    return new NextResponse("Success", { status: 200 })
   } else {
     console.log("fail: res.data?.score:", res.data?.score)
-    return new Response("Invalid recaptcha", { status: 400 })
+    return new NextResponse("Invalid recaptcha", { status: 400 })
   }
 }

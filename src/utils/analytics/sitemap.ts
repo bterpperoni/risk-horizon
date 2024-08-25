@@ -32,5 +32,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 1,
     },
+    {
+      url: "https://risk-horizon.be/about",
+      lastModified: new Date().toLocaleDateString(),
+      changeFrequency: "monthly",
+      priority: 0.1,
+    },
+    {
+      url: "https://risk-horizon.be/onboarding",
+      lastModified: new Date().toLocaleDateString(),
+      changeFrequency: "weekly",
+      priority: 0.1
+    },
+    {
+      url: "https://risk-horizon.be/404",
+      lastModified: new Date().toLocaleDateString(),
+      changeFrequency: "weekly",
+      priority: 0.1
+    },
   ]
 }
