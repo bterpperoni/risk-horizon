@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { Button } from "$/lib/components/ui/button"
+import { Button } from "$/lib/components/ui/buttons/Button"
 
 import Countdown from "react-countdown"
 

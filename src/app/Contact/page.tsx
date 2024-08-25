@@ -1,11 +1,11 @@
 import React from "react"
-import { Button } from "$/lib/components/ui/button"
-import { Input } from "$/lib/components/ui/input"
+import { Button } from "$/lib/components/ui/buttons/Button"
+import { Input } from "$/lib/components/ui/form-components/Input"
 import { Textarea } from "$/lib/components/ui/textarea"
 import Link from "next/link"
 import { Facebook, MailboxIcon } from "lucide-react"
 
-import Form from "$/lib/components/form"
+import Form from "$/lib/components/ui/form-components/form"
 import Image from "next/image"
 import { Separator } from "$/lib/components/ui/separator"
 
