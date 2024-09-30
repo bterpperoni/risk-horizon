@@ -69,7 +69,7 @@ function Navbar() {
                   id="underlinepls"
                 >
                   <SignedOut>
-                    <SignInButton forceRedirectUrl={"/dashboard/"}>Se connecter</SignInButton>
+                    <SignInButton forceRedirectUrl={"/dashboard"}>Se connecter</SignInButton>
                   </SignedOut>
                   <SignedIn>
                     <UserButton />
@@ -100,7 +100,7 @@ function Navbar() {
                   ))}
                   <div className="text-white hover:underline  px-3 mr-1 py-2 text-[18px] text-nowrap font-medium">
                     <SignedOut>
-                      <SignInButton forceRedirectUrl={"/dashboard/"}>Se connecter</SignInButton>
+                      <SignInButton forceRedirectUrl={"/dashboard"}>Se connecter</SignInButton>
                     </SignedOut>
                     <SignedIn>
                       <UserButton />

@@ -47,10 +47,13 @@ export default function OnboardingComponent() {
       try {
         await user?.reload()
         mutate(user?.primaryEmailAddress?.emailAddress ?? "")
+        setTimeout( () => {
+          router.push("/dashboard")
+        }
+        , 3000)
       } catch (error) {
         console.error(error)
       }
-      router.push("/dashboard/")
     }
     if (res?.error) {
       setError(res?.error)
