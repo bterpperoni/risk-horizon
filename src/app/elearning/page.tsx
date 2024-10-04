@@ -1,82 +1,264 @@
 "use client"
-
+import { v4 as uuidv4 } from "uuid"
 import { useEffect, useState } from "react"
-import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import { ChevronRight } from "lucide-react"
-import { File, Folder, Tree } from "@/components/ui/file-tree"
-import dynamic from "next/dynamic"
+import { Tree } from "@/components/ui/file-tree"
 import Landing from "./courses/landing"
 import Phishing from "./courses/phishing"
 import JS from "./courses/js"
 import TreeComp from "./tree"
 import Editor from "./editor"
-
+import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import axios from "axios"
+import { toast } from "sonner"
+import { AlertTriangle, Pen, X } from "lucide-react"
+import { useMutation, useQuery } from "@tanstack/react-query"
 // Mock data for categories and nested courses
 
 export default function Component() {
-  const [selectedCourse, setSelectedCourse] = useState<string>("landing")
   const [selectedID, setselectedid] = useState<number>(0) // Renamed to `setSelectedID`
+  const [refresh, setRefresh] = useState<boolean>(false)
+  const [isRenameOpen, setIsRenameOpen] = useState<boolean>(false)
+  const [renameText, setRenameText] = useState<string>("")
+  const [isDeleteOpen, setIsDeleteOpen] = useState<boolean>(false)
+  const [isEditingMode, setIsEditingMode] = useState<boolean>(false)
 
-  const courseComponents = {
-    Phishing: Phishing,
-    landing: Landing,
-    "C'est quoi la cybersécurité ?": JS,
+  console.log(selectedID)
+  //a recursive function to find the element with the corresponding id in the tree and add a new course to it
+
+  function CallRename(id: number) {
+    setIsRenameOpen(!isRenameOpen)
+    setselectedid(id)
   }
 
-  // a recursive function to flatmap the nested courses
-  function flatmapCourses(ELEMENTS: Elements[]): Elements[] {
-    return ELEMENTS.flatMap((element) => {
-      if (element.children) {
-        return [element, ...flatmapCourses(element.children)]
+  function CallDelete(id: number) {
+    setIsDeleteOpen(!isDeleteOpen)
+    setselectedid(id)
+  }
+
+  function deleteCourse(id: number) {
+    function deleteCourseRecursive(elements: Elements[]) {
+      for (let i = 0; i < elements.length; i++) {
+        if (elements[i].id === id.toString()) {
+          elements.splice(i, 1)
+          return
+        }
+        if (elements[i].children !== undefined) {
+          deleteCourseRecursive(elements[i].children as Elements[])
+        }
       }
-      return element
-    })
+    }
+    deleteCourseRecursive(ELEMENTS)
+    setRefresh(!refresh)
   }
 
-  useEffect(() => {
-    const courses = flatmapCourses(ELEMENTS)
-    const selectedCourse = courses.find((course) => course.id === selectedID.toString())
-    if (selectedCourse?.name) setSelectedCourse(selectedCourse?.name)
-  }, [selectedID])
-
-  const renderCourseContent = () => {
-    if (!selectedCourse) return null
-    const CourseComponent = courseComponents[selectedCourse as keyof typeof courseComponents]
-    return CourseComponent ? (
-      <CourseComponent />
-    ) : (
-      <div>
-        <p className="mt-4">Course content is not available.</p>
-      </div>
-    )
+  function renameCourse(id: number, name: string) {
+    function renameCourseRecursive(elements: Elements[]) {
+      for (let i = 0; i < elements.length; i++) {
+        if (elements[i].id === id.toString()) {
+          elements[i].name = name
+          return
+        }
+        if (elements[i].children !== undefined) {
+          renameCourseRecursive(elements[i].children as Elements[])
+        }
+      }
+    }
+    renameCourseRecursive(ELEMENTS)
+    setRefresh(!refresh)
   }
+
+  function addCourse(id: number) {
+    const fetchData = async () => {
+      const data = await axios.get(`/api/get-course?id=${id}`)
+      if (data.data.Content.length > 190) {
+        toast.error("Le document doit être vide pour devenir un dossier")
+        return
+      }
+      const newID = Math.floor(Math.random() * 2000000).toString()
+      let newElement = {
+        id: newID,
+        isSelectable: true,
+        name: "New Course",
+      }
+      function addCourseRecursive(elements: Elements[]) {
+        for (let i = 0; i < elements.length; i++) {
+          if (elements[i].id === id.toString()) {
+            if (elements[i].children) {
+              elements[i].children?.push(newElement)
+              initialExpandedItems.push(newElement.id)
+            } else {
+              elements[i].children = [newElement]
+            }
+            return
+          }
+          if (elements[i].children !== undefined) {
+            addCourseRecursive(elements[i].children as Elements[])
+          }
+        }
+      }
+      addCourseRecursive(ELEMENTS)
+      setRefresh(!refresh)
+    }
+    fetchData()
+  }
+
+  const { mutate } = useMutation({
+    mutationKey: ["edit-course-layout"],
+    mutationFn: async (element: Elements[]) => {
+      const { data } = await axios.post("/api/edit-course-layout", {
+        content: element,
+      })
+      refetch()
+      return data
+    },
+    onSuccess: () => {
+      toast.success("Course updated")
+    },
+    onError: () => {
+      toast.error("An error occurred while updating the course")
+    },
+  })
+
+  const { data, isError, refetch } = useQuery({
+    queryKey: ["get-course-layout"],
+    queryFn: async () => {
+      const { data } = await axios.get(`/api/get-course-layout`)
+      console.log(data.Content)
+      ELEMENTS = data.Content as Elements[]
+    },
+    retry: 1,
+    refetchOnWindowFocus: false,
+  })
 
   return (
-    <div className="flex h-screen bg-background">
-      <div className="flex h-screen bg-background">
+    <div className="flex h-screen bg-background w-full">
+      <Dialog open={isDeleteOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <div className="flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5" />
+              <DialogTitle>Are you sure ?</DialogTitle>
+            </div>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <Input
+              id="username"
+              className=""
+              placeholder='Type "DELETE" to confirm'
+              onChange={(e) => setRenameText(e.target.value)}
+              value={renameText}
+            />
+          </div>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant={"secondary"}
+              onClick={() => {
+                setIsDeleteOpen(!isDeleteOpen)
+                setRenameText("")
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              variant={"destructive"}
+              disabled={renameText !== "DELETE" ? true : false}
+              onClick={() => {
+                deleteCourse(selectedID)
+                setIsDeleteOpen(!isDeleteOpen)
+                setRenameText("")
+              }}
+            >
+              Save changes
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={isRenameOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Name element</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="username" className="text-right">
+                Name :
+              </Label>
+              <Input
+                id="username"
+                defaultValue="@peduarte"
+                className="col-span-3"
+                onChange={(e) => setRenameText(e.target.value)}
+                value={renameText}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant={"secondary"}
+              onClick={() => {
+                setIsRenameOpen(!isRenameOpen)
+                setRenameText("")
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              onClick={() => {
+                renameCourse(selectedID, renameText)
+                setIsRenameOpen(!isRenameOpen)
+                setRenameText("")
+              }}
+            >
+              Save changes
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <div className="flex h-screen bg-background !w-full">
         <aside className="w-5xl border-r overflow-auto">
           <Tree
             className="p-2 overflow-visible rounded-md bg-background tree-text"
-            initialExpandedItems={["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"]}
+            initialExpandedItems={initialExpandedItems}
             elements={ELEMENTS}
             setselectedid={setselectedid}
           >
-            <TreeComp ELEMENTS={ELEMENTS} />
+            <TreeComp
+              ELEMENTS={ELEMENTS}
+              addCourse={addCourse}
+              CallRename={CallRename}
+              CallDelete={CallDelete}
+            />
           </Tree>
+          <Button
+            className="fixed bottom-2"
+            onClick={() => {
+              if (isEditingMode) {
+                mutate(ELEMENTS)
+              }
+              setIsEditingMode(!isEditingMode)
+            }}
+          >
+            {isEditingMode ? <X /> : <Pen />}
+          </Button>
         </aside>
 
-        <main className="flex-1 overflow-auto p-6">
-          <Editor />
-          {selectedCourse ? (
-            renderCourseContent()
-          ) : (
-            <div>
-              <h1 className="text-2xl font-bold">Welcome to Your E-Learning Platform</h1>
-              <p className="mt-4">Select a course from the sidebar to begin learning.</p>
-            </div>
-          )}
+        <main className="flex-1 overflow-auto p-6 relative !w-full ">
+          <Editor id={selectedID} />
         </main>
       </div>
     </div>
@@ -90,7 +272,7 @@ interface Elements {
   children?: Elements[]
 }
 
-const ELEMENTS: Elements[] = [
+let ELEMENTS: Elements[] = [
   {
     id: "1",
     isSelectable: true,
@@ -149,4 +331,19 @@ const ELEMENTS: Elements[] = [
       },
     ],
   },
+]
+
+let initialExpandedItems = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10",
+  "11",
+  "300",
 ]
