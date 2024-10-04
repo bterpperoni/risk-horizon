@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server"
 
 const isOnboardingRoute = createRouteMatcher("/onboarding")
 const isPublicRoute = createRouteMatcher(["/", "/about", "/Contact", "/OSI"])
-const isPrivateRoute = createRouteMatcher(["/dashboard(/.*)", "/elarning(/.*)", "/newsletter/unsubscribe"])
+const isPrivateRoute = createRouteMatcher(["/dashboard(.*)", "/elarning(/.*)", "/profile(.*)"])
 
 export default clerkMiddleware((auth: ClerkMiddlewareAuth, req: NextRequest) => {
   const { userId, sessionClaims,  } = auth()
