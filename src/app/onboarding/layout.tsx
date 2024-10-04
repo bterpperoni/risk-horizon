@@ -1,14 +1,18 @@
 import { auth } from "@clerk/nextjs/server"
-import { redirect } from "next/navigation"
 import React from "react"
+import { NextResponse } from 'next/server';
+import { redirect } from "next/navigation";
 
 export default function RootLayout({
-  children}: {children: React.ReactNode}) {
+  children,
+  nextResponse
+}: {children: React.ReactNode, nextResponse: NextResponse}) {
 
   const { sessionClaims } = auth()
 
   if (sessionClaims?.metadata.onboardingComplete) {
-    redirect('/dashboard')
+    console.log("SessionClaims: ",sessionClaims)
+    return redirect('/')
   }
 
   return <>{children}</>
