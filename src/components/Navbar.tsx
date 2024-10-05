@@ -84,26 +84,28 @@ function Navbar () {
                         href='sign-in'
                         className='text-gray-300 hover:text-white mr-4'
                       >
-                        Sign In
+                        Se connecter
                       </Link>
                       <Link
                         href='sign-up'
                         className='text-gray-300 hover:text-white mr-4'
                       >
-                        Sign Up
+                        S'inscrire
                       </Link>
                     </>
                   )}
-                  {user && (
-                    <Link
-                      href='profile'
-                      className='text-gray-300 hover:text-white mr-4'
-                    >
-                      Profile
-                    </Link>
-                  )}
-                  <div className='ml-auto'>
-                    <UserButton />
+                  <div className='flex flex-row'>
+                    {user && (
+                      <Link
+                        href='profile'
+                        className='text-gray-300 hover:text-white mr-4'
+                      >
+                        Profile
+                      </Link>
+                    )}
+                    <div className='ml-auto'>
+                      <UserButton />
+                    </div>
                   </div>
                 </div>
               </ClerkLoaded>
@@ -131,32 +133,32 @@ function Navbar () {
                   ))}
                   <div className='text-white hover:underline  px-3 mr-1 py-2 text-[18px] text-nowrap font-medium'>
                     {!user && (
-                    <>
+                      <>
+                        <Link
+                          href='sign-in'
+                          className='text-gray-300 hover:text-white mr-4'
+                        >
+                          Sign In
+                        </Link>
+                        <Link
+                          href='sign-up'
+                          className='text-gray-300 hover:text-white mr-4'
+                        >
+                          Sign Up
+                        </Link>
+                      </>
+                    )}
+                    {user && (
                       <Link
-                        href='sign-in'
+                        href='profile'
                         className='text-gray-300 hover:text-white mr-4'
                       >
-                        Sign In
+                        Profile
                       </Link>
-                      <Link
-                        href='sign-up'
-                        className='text-gray-300 hover:text-white mr-4'
-                      >
-                        Sign Up
-                      </Link>
-                    </>
-                  )}
-                  {user && (
-                    <Link
-                      href='profile'
-                      className='text-gray-300 hover:text-white mr-4'
-                    >
-                      Profile
-                    </Link>
-                  )}
-                  <div className='ml-auto'>
-                    <UserButton />
-                  </div>
+                    )}
+                    <div className='ml-auto'>
+                      <UserButton />
+                    </div>
                   </div>
                 </div>
               </SheetContent>
