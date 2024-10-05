@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import {
   SignedOut,
   SignInButton,
-  SignedIn,
+SignOutButton,
   UserButton,
   useUser,
   ClerkLoading,
@@ -81,17 +81,17 @@ function Navbar () {
                   {!user && (
                     <>
                       <Link
-                        href='sign-in'
+                        href='https://chief-humpback-63.accounts.dev/sign-in'
                         className='text-gray-300 hover:text-white mr-4'
                       >
                         Se connecter
                       </Link>
-                      <Link
-                        href='sign-up'
+                      {/* <Link
+                        href='https://chief-humpback-63.accounts.dev/sign-up'
                         className='text-gray-300 hover:text-white mr-4'
                       >
                         S'inscrire
-                      </Link>
+                      </Link> */}
                     </>
                   )}
                   <div className='flex flex-row'>
@@ -135,17 +135,17 @@ function Navbar () {
                     {!user && (
                       <>
                         <Link
-                          href='sign-in'
+                          href='https://chief-humpback-63.accounts.dev/sign-in'
                           className='text-gray-300 hover:text-white mr-4'
                         >
                           Sign In
                         </Link>
-                        <Link
-                          href='sign-up'
+                        {/* <Link
+                          href='https://chief-humpback-63.accounts.dev/sign-up'
                           className='text-gray-300 hover:text-white mr-4'
                         >
                           Sign Up
-                        </Link>
+                        </Link> */}
                       </>
                     )}
                     {user && (
@@ -156,8 +156,8 @@ function Navbar () {
                         Profile
                       </Link>
                     )}
-                    <div className='ml-auto'>
-                      <UserButton />
+                    <div className='ml-auto mt-2'>
+                      <SignOutButton />
                     </div>
                   </div>
                 </div>
