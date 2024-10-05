@@ -1,12 +1,13 @@
-import { clerkMiddleware, createRouteMatcher, auth, ClerkMiddlewareAuth } from "@clerk/nextjs/server"
+import { clerkMiddleware, createRouteMatcher, ClerkMiddlewareAuth,  } from "@clerk/nextjs/server"
+
 import { NextRequest, NextResponse } from "next/server"
 
-const isOnboardingRoute = createRouteMatcher(["/onboarding(/.*)"])
+const isOnboardingRoute = createRouteMatcher("/onboarding")
 const isPublicRoute = createRouteMatcher(["/", "/about", "/Contact", "/OSI"])
-const isPrivateRoute = createRouteMatcher(["/dashboard(/.*)", "/elarning(/.*)", "/newsletter/unsubscribe"])
+const isPrivateRoute = createRouteMatcher(["/dashboard(.*)", "/elarning(/.*)", "/profile(.*)"])
 
 export default clerkMiddleware((auth: ClerkMiddlewareAuth, req: NextRequest) => {
-  const { userId, sessionClaims, redirectToSignIn } = auth()
+  const { userId, sessionClaims,  } = auth()
 
   if (isPrivateRoute(req)) auth().protect()
 
@@ -17,7 +18,7 @@ export default clerkMiddleware((auth: ClerkMiddlewareAuth, req: NextRequest) => 
 
   // If the user isn't signed in and the route is private, redirect to sign-in
   if (!userId && isPrivateRoute(req))
-    return redirectToSignIn({ returnBackUrl: req.url })
+    return NextResponse.redirect(new URL("/sign-in", req.url))
 
   // Catch users who do not have onboardingComplete: true in their publicMetadata
   // Redirect them to the /onboarding route to complete onboarding
